@@ -11,27 +11,57 @@
       </van-row>
     </div>
     <div class="swiper-area">
-      <van-swipe :autoplay="1500">
+      <van-swipe :autoplay="1000">
         <van-swipe-item v-for="(banner,index) in bannerPicArray" :key="index">
-          <img :src="banner.imageUrl" width="100%"/>
+          <img v-lazy="banner.image" width="100%"/>
         </van-swipe-item>
       </van-swipe>
     </div>
+    <div class="type-bar">
+      <div  v-for="(cate,index) in category" :key="index" >
+        <img v-lazy="cate.image" width="90%" />
+        <span>{{cate.mallCategoryName}}</span>
+      </div>
+    </div>
+    <div class="ad-banner">
+      <img v-lazy="adBanner.PICTURE_ADDRESS" width="100%">
+    </div>
+    <swiperDefault v-bind:slide="recommendGoods"></swiperDefault>
   </div>
 </template>
 
 <script>
+  import axios from 'axios'
+  import swiperDefault from '../swiper/SwiperDefault'
     export default {
         data(){
           return{
             locationIcon:'',
-            bannerPicArray:[
-              {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic001.jpg'},
-              {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic002.jpg'},
-              {imageUrl:'http://7xjyw1.com1.z0.glb.clouddn.com/simleVueDemoPic003.jpg'},
-            ]
+            bannerPicArray:'',
+            adBanner:'',
+            category:'',
+            recommendGoods:''
           }
-        }
+        },
+      components:{swiperDefault},
+      created(){
+        axios({
+          url: 'https://www.easy-mock.com/mock/5b9a047251bb724fd9ba074b/example/index',
+          method: 'get',
+        })
+          .then(response => {
+            console.log(response)
+            if(response.status===200){
+              console.log(response.data.data.category);
+              this.bannerPicArray = response.data.data.slides;
+              this.adBanner = response.data.data.advertesPicture;
+              this.category=response.data.data.category;
+              this.recommendGoods = response.data.data.recommend
+            }
+          })
+          .catch((error) => {
+          })
+      }
     }
 </script>
 
@@ -43,10 +73,10 @@
     .search-input{
       width:100%;
       height: 1.3rem;
-      border-top:0px;
-      border-left:0px;
-      border-right:0px;
-      border-bottom: 1px solid 1px !important ;
+      border-top:0;
+      border-left:0;
+      border-right:0;
+      border-bottom: 1px solid !important ;
       background-color: #e5017d;
       color:#fff;
     }
@@ -59,4 +89,19 @@
     width:100%;
     clear:both;
   }
+  .type-bar{
+    background-color: #fff;
+    margin:0 .3rem .3rem .3rem;
+    border-radius: .3rem;
+    font-size:14px;
+    display: flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+  }
+  .type-bar div{
+    padding: .3rem;
+    font-size: 12px;
+    text-align: center;
+  }
+
 </style>

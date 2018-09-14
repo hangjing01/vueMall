@@ -3,10 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import {Button,Col,Row,Swipe,SwipeItem} from 'vant'
+import {Button,Col,Row,Swipe,SwipeItem,Lazyload} from 'vant'
+import 'swiper/dist/css/swiper.css'
 
 Vue.config.productionTip = false
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem)
+Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
